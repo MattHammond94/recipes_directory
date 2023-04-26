@@ -18,4 +18,10 @@ describe RecipeRepository do
     expect(recipes.last.name).to eq 'Triffle'
     expect(recipes[2].average_cooking_time).to eq '10 minutes'
   end
+
+  it 'Should return a single recipe object corresponding to id given as arg' do
+    repo = RecipeRepository.new
+    expect(repo.find(4).id).to eq '4'
+    expect(repo.find(5).name).to eq 'Fry up'
+  end
 end

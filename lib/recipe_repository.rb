@@ -17,4 +17,18 @@ class RecipeRepository
     end
     recipes
   end
+
+  def find(id)
+    sql = 'SELECT id, name, average_cooking_time, rating FROM recipes WHERE id = $1;'
+    params = [id]
+    selected = DatabaseConnection.exec_params(sql, params)
+    
+    recipe = selected[0]
+    item = Recipe.new
+    item.id = recipe['id']
+    item.name = recipe['name']
+    item.average_cooking_time = recipe['average_cooking_time']
+    item.rating = recipe['rating']
+    item
+  end
 end
