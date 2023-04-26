@@ -72,7 +72,7 @@ end
 # Repository class
 # (in lib/recipe_repository.rb)
 class RecipeRepository
-
+  
 end
 ```
 
@@ -95,22 +95,20 @@ end
 ## 5. Define the Repository Class interface
 Your Repository class will need to implement methods for each "read" or "write" operation you'd like to run against the database.
 
-Using comments, define the method signatures (arguments and return value) and what they do - write up the SQL queries that will be used by each method.
-
 ```ruby
 # EXAMPLE
-# Table name: books
+# Table name: recipes
 
 # Repository class
-# (in lib/books_repository.rb)
+# (in lib/recipe_repository.rb)
 
-class BooksRepository
+class RecipeRepository
 
   # Selecting all records
   # No arguments
   def all
     # Executes the SQL query:
-    # SELECT * FROM books;
+    # SELECT * FROM recipes;
 
     # Returns an array of Book objects.
   end
@@ -119,23 +117,20 @@ class BooksRepository
   # One argument: the id (number)
   def find(id)
     # Executes the SQL query:
-    # SELECT title, author_name FROM books WHERE id = $1;
+    # SELECT name, average_cooking_time, rating FROM recipes WHERE id = $1;
+    # params = [id]
 
-    # Returns a single book object.
+    # Returns a single recipe object.
   end
 
-  # Add more methods below for each operation you'd like to implement.
-
-  # def create(book)
-    
-  # end
-
+  def create(book)
+    # adds a book object to the database
+    # 'INSERT INTO recipes(name, average_cooking_time, rating) VALUES('Shrimo Toast', '5 minutes' 3);'
+  end
 end
 ```
 
 ## 6. Write Test Examples
-Write Ruby code that defines the expected behaviour of the Repository class, following your design from the table written in step 5.
-
 These examples will later be encoded as RSpec tests.
 
 ```ruby
@@ -145,55 +140,51 @@ These examples will later be encoded as RSpec tests.
 # 1
 # Get all books
 
-repo = BookRepository.new
+repo = RecipeRepository.new
 
-books = repo.all
+recipes = repo.all
 
-books.length # =>  Amount of books in DB as an int
+recipes.length # =>  Amount of recipes in DB as an int
 
-books[0].id # =>  1
-books[0].title # =>  'LOTR'
-books[0].author_name # =>  'Tolkein'
+recipes[0].id # =>  1
+recipes[0].name # =>  'Baked Ziti'
+recipes[0].average_cooking_time # =>  '25 minutes'
+recipes[0].rating # => 4
 
-books[1].id # =>  2
-books[1].title # =>  'HP - Phillys Stone'
-books[1].author_name # =>  ''
+recipes[1].id # =>  2
+recipes[1].name # =>  ''
+recipes[1]. # =>  ''
 
 # 2
 # Get a single student
 
-repo = BookRepository.new
+repo = RecipeRepository.new
 
-book = repo.find(1)
+recipe = repo.find(1)
 
-book.id # =>  1
-book.title # =>  'LOTR'
-book.author_name # =>  'Tolkein'
+recipe.id # =>  1
+recipe.title # =>  ''
+recipe.author_name # =>  ''
 
-# Add more examples for each method
-Encode this example as a test.
 ```
 
 ## 7. Reload the SQL seeds before each test run
 Running the SQL code present in the seed file will empty the table and re-insert the seed data.
 
-This is so you get a fresh table contents every time you run the test suite.
 ```ruby
 # EXAMPLE
 
-# file: spec/books_repository_spec.rb
+# file: spec/recipe_repository_spec.rb
 
- def reset_books_table
-    seed_sql = File.read('')
-    connection = PG.connect({ host: '127.0.0.1', dbname: '' })
+ def reset_recipes_table
+    seed_sql = File.read('spec/recipe_test_seeds.sql')
+    connection = PG.connect({ host: '127.0.0.1', dbname: 'recipes_directory_test' })
     connection.exec(seed_sql)
   end
 
   before(:each) do
-    reset_books_table
+    reset_recipes_table
   end
-
-  # (your tests will go here).
 end
 ```
 
