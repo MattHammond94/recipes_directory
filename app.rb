@@ -1,10 +1,8 @@
 require_relative 'lib/database_connection'
+require_relative 'lib/recipe_repository'
 
 DatabaseConnection.connect('recipes_directory')
 
-# sql = 'SELECT id, title FROM albums;'
-# result = DatabaseConnection.exec_params(sql, [])
-
-# result.each do |record|
-#   p record
-# end
+repo = RecipeRepository.new
+recipe = repo.find(5)
+puts recipe.name

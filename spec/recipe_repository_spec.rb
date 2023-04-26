@@ -21,7 +21,14 @@ describe RecipeRepository do
 
   it 'Should return a single recipe object corresponding to id given as arg' do
     repo = RecipeRepository.new
-    expect(repo.find(4).id).to eq '4'
-    expect(repo.find(5).name).to eq 'Fry up'
+    recipe = repo.find(4)
+    expect(recipe.id).to eq '4'
+    expect(recipe.name).to eq 'Beans on toast'
+  end
+
+  it 'Further find test - should return same result for different id value passed' do
+    repo = RecipeRepository.new
+    recipe = repo.find(3)
+    expect(recipe.name).to eq 'Nachos'
   end
 end
